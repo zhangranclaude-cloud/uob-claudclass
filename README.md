@@ -12,6 +12,8 @@ A single-file Kanban board for an IT project management office (PMO), built as a
 
 **Live demo:** https://zhangranclaude-cloud.github.io/uob-claudclass/
 
+![IT PMO Project Board screenshot](docs/screenshot.png)
+
 ## Features
 
 - Four columns: Backlog, In Progress, Blocked, Done, with live count badges.

@@ -27,9 +27,16 @@ Print a short findings table (check, result). If anything fails, fix it or stop 
 - Commit with clear messages (follow the commit attribution lines from the session's system reminder).
 - `git push -u origin <branch>`; on network errors only, retry up to 4 times with 2s/4s/8s/16s backoff.
 
+## 3a. Screenshot (do this before writing the README)
+Capture the app and save it as `docs/screenshot.png` (the only image file allowed in the repo; never reference it from `index.html`).
+- Prefer the Playwright MCP tools (`mcp__playwright__*`, from `.mcp.json`; load them with ToolSearch "playwright"). Navigate to the live Pages URL if reachable, otherwise `file://<repo>/index.html`, resize the viewport to 1400x820, wait for the cards to render, then take a viewport screenshot to `docs/screenshot.png`.
+- If the MCP tools are not available in this session (servers connect only at session start), fall back to the Playwright library with the preinstalled Chromium (`executablePath: '/opt/pw-browsers/chromium'`; never run `playwright install`): launch headless, same viewport, wait for `.card`, `page.screenshot({ path: 'docs/screenshot.png' })`, and check there were no `pageerror` events.
+- Open the PNG and confirm it shows all four columns with cards and no error state. Keep it under about 300 KB. Reshoot whenever the UI changes.
+- Security: the screenshot must show only the seeded demo data. Do not capture the Add Task dialog with real input, and never the email address or any browser chrome.
+
 ## 3. README
 Create or update `README.md` (keep any accurate existing content, fix what is stale). Include:
-- Title and one-line description; screenshot only if a committed image already exists (do not add image files; the project has none).
+- Title and one-line description, then the screenshot from step 3a: `![IT PMO Project Board screenshot](docs/screenshot.png)` right under the live demo link.
 - **Tech badges** (static shields.io-style badge links are the one allowed use of an external image, in the README only, never in `index.html`): HTML5, CSS3, JavaScript (vanilla, no framework), GitHub Pages, GitHub Actions, FormSubmit.
 - Live demo link (the Pages URL, `https://<owner>.github.io/<repo>/`).
 - Features (Kanban columns, drag and drop, keyboard move, filters, add-task form, email notification).
