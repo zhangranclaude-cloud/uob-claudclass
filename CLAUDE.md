@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 A single-file, fictitious-bank internal IT PMO Kanban demo/training tool. The whole app is `index.html` (markup + `<style>` + `<script>`). There is no build, lint, or test tooling and no package.json.
 
 - **Run:** open `index.html` directly in a browser (double-click; no server). Headless check: Playwright's Chromium is at `/opt/pw-browsers/chromium` (launch with `executablePath`, don't run `playwright install`).
+- **Browser testing (Playwright MCP):** `.mcp.json` registers the `playwright` MCP server (pinned `@playwright/mcp`, run through `npx`, `--isolated` so no profile is kept). It is dev tooling only; the app itself still has no npm/package.json. Approve the server when Claude Code prompts, and use it on `file:///…/index.html`. In the cloud container add `--executable-path /opt/pw-browsers/chromium --headless --no-sandbox`; locally Playwright needs its Chromium (`npx playwright install chromium`).
 - **Syntax check the script:** extract the `<script>` body and run `node --check` on it.
 
 ## Hard constraints (from the project brief — do not break)
