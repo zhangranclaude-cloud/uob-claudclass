@@ -4,15 +4,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A single-file, fictitious-bank internal IT PMO Kanban demo/training tool. The whole app is `index.html` (markup + `<style>` + `<script>`). There is no build, lint, or test tooling and no package.json.
+A single-file, fictitious-bank internal IT PMO Kanban demo/training tool. The whole app is `index.html` (markup + `<style>` + `<script>`). There is no build, lint, or test tooling. `package.json` exists only to install the Playwright MCP dev tool (see below); the app has no dependencies.
 
 - **Run:** open `index.html` directly in a browser (double-click; no server). Headless check: Playwright's Chromium is at `/opt/pw-browsers/chromium` (launch with `executablePath`, don't run `playwright install`).
-- **Browser testing (Playwright MCP):** `.mcp.json` registers the `playwright` MCP server (pinned `@playwright/mcp`, run through `npx`, `--isolated` so no profile is kept). It is dev tooling only; the app itself still has no npm/package.json. Approve the server when Claude Code prompts, and use it on `file:///…/index.html`. In the cloud container add `--executable-path /opt/pw-browsers/chromium --headless --no-sandbox`; locally Playwright needs its Chromium (`npx playwright install chromium`).
+- **Browser testing (Playwright MCP):** `.mcp.json` registers the `playwright` MCP server (pinned `@playwright/mcp@0.0.83`, `--isolated` so no profile is kept). It is installed as a devDependency: run `npm install` once (`node_modules/` is gitignored), and `npx` then uses the local copy. It is dev tooling only; nothing in `index.html` depends on it. Approve the server when Claude Code prompts, and use it on `file:///…/index.html`. In the cloud container add `--executable-path /opt/pw-browsers/chromium --headless --no-sandbox`; locally Playwright needs its Chromium (`npx playwright install chromium`).
 - **Syntax check the script:** extract the `<script>` body and run `node --check` on it.
 
 ## Hard constraints (from the project brief — do not break)
 
-- Vanilla HTML/CSS/JS only, all in the one file. No frameworks, bundler, npm, CDN scripts, web fonts, or image files (system font stack, inline SVG/Unicode icons).
+- Vanilla HTML/CSS/JS only, all in the one file. No frameworks, bundler, runtime npm packages, CDN scripts, web fonts, or image files (system font stack, inline SVG/Unicode icons).
 - **No persistence:** no localStorage/sessionStorage/IndexedDB/cookies. Refresh resets to seeded data by design (the UI footnote says so).
 - Only backend is FormSubmit's AJAX JSON endpoint (`FORMSUBMIT_ENDPOINT` in the script's CONFIG section). The email address must appear only in that constant and be sent nowhere else. FormSubmit failure must never break the board (try/catch in `handleSubmit`; card stays, warning toast shown).
 - No `!important`; no `alert()`/`confirm()` (delete uses an inline Yes/No toggle; validation errors are inline).
